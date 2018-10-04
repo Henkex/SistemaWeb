@@ -1,0 +1,70 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no, shrink-to-fit=no">
+
+    <meta name="description" content="Primera version de un sistema de almacen para la empresa Real Star">
+    <meta name="author" content="Manuel LLajaruna Legua">
+
+    <title>Sistema Web</title>
+
+    <link rel="stylesheet" href="{% static 'plugins/DataTables/datatables.min.css' %}"/>
+
+     <!-- Bootstrap4 Core CSS -->
+    <link href="{% static 'plugins/bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Chosen selects Core CSS -->
+    <link href="{% static 'plugins/chosen/chosen.css' %}" rel="stylesheet">
+
+    <!-- Mi CSS personalizado-->
+    <link href="{% static 'css/estilos.css' %}" rel="stylesheet">
+
+    <!-- Font Awesome (iconos) -->
+    <link href="{% static 'fonts/fontawesome/css/all.css' %}" rel="stylesheet" type="text/css">
+
+    {% block extrahead %} <!-- Aqui se añade estilos y fuentes extras segun el modulo -->
+    {% endblock extrahead %}
+
+</head>
+
+<body>
+
+    {% block content %}     <!-- Aqui se inserta el contenedor del modulo -->
+    {% endblock content %}
+
+    {# {% include 'navbar.html' %} #}
+
+</body>
+<footer class="page-footer bg-inverse">
+  <div class="footer-copyright text-center py-3">© 2018 Real Star
+  </div>
+</footer>
+
+    <!-- jQuery -->
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap4 Core JavaScript -->
+    <script src="{% static 'plugins/bootstrap4/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'plugins/popper/popper.js' %}"></script>
+
+    <!-- Chosen selects Core JavaScript -->
+    <script src="{% static 'plugins/chosen/chosen.jquery.js' %}"></script>
+
+    <!-- Django Ajax Permite peticiones "Post" limpias de crftoken-->
+    <script src="{% static 'js/DjangoAjax.js' %}"></script>
+
+    <script src="{% static 'plugins/DataTables/datatables.min.js' %}"></script>
+
+    <!-- JavaScript del sistema-->
+    <script src="{% static 'js/sistema.js' %}"></script>
+
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <script src="{% static 'js/jquery.formset.min.js' %}"></script>
+   
+    {% block extrajs %}<!-- Extra scripts que puede ser añadidos por un modulo en especifico" -->
+    {% endblock extrajs %}
+
+</html>

@@ -1,0 +1,48 @@
+<!-- Modal Agregar Empresa --> 
+ 
+<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-content">
+		<!-- Encabezado -->
+		{% if object %}
+		<form role='form' action="{% url 'productos:modificar_producto' object.pk %}" method="Post" accept-charset="utf-8">
+			<div class="modal-header">
+				<h4 class="modal-title">Editar Producto</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+		{% else %}
+			<form id="ajax_form" role='form' action="{% url 'productos:crear_producto' %}" method="Post" accept-charset="utf-8">
+			<div class="modal-header">
+				<h4 class="modal-title">Registrar Nuevo Producto</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+		{% endif %}
+		
+		
+		<!-- Cuerpo -->
+		{% csrf_token %}
+		<div class="modal-body">
+			<p>{{ producto.get_id_formateado }}</p>
+    {% for field in form %}
+      <div class="form-group{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+		<!-- Footer -->
+			<div class="modal-footer">
+				<div class="col-lg-12 text-right">
+                     <input id="ajax_form_submit" type="submit" class="btn submit-btn btn-primary" name="submit" value="Guardar">
+                     <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
+                     Cancelar
+                 	</button>
+                </div>
+			</div>
+		</form>	
+	</div>
+	
+</div>

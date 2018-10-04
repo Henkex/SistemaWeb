@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block content %}
+{# Barra de navegación de la interfaz de usuario-------------------------------------------------------------- #}
+<div class="container">
+
+	<nav id="topbar" class="navbar navbar-expand-lg navbar-toggleable-md navbar-light bg-light fixed-top">
+		<div class="float-left">
+			<button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+        	</button>	
+		</div>
+
+        <a href="/" class="navbar-brand breadcrumb-nd mr-auto">
+            Real
+        </a>
+
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#UserInterface">
+            <span class="navbar-toggler-icon"></span> 
+        </button>
+
+        <div class="collapse navbar-collapse" id="UserInterface">
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+
+                <li class="nav-item active">
+                    <a class="nav-link " href="#"><i class="fas fa-arrow-alt-circle-down"></i>Entradas</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> <i class="fas fa-arrow-circle-up"></i> Salidas</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link far fa-user dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                        Bienvenido
+                        <strong>{{ user.first_name }}</strong>
+                        <strong>{{ user.last_name }}</strong>
+                    </a>
+                    <div class="dropdown-menu mr-auto" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" >Son las 13 horas</a>
+                        <a class="dropdown-item" >Ultima Incidencia</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Cerrar sesión</a>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+	</nav>
+</div>
+
+{# Barra de navegación de los modulos del sistema-------------------------------------------------------------- #}
+<div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar" class="side-nav fixed sn-bg-4">
+            <div class="sidebar-header">
+                <h3>Almacen</h3>
+                <strong>AL</strong>
+            </div>
+
+            <ul id="acordion" class="list-unstyled components" role="tablist">
+
+                {% if request.user.is_superuser or request.user.is_jefe_alm or request.user.is_operario_alm  %}
+                <li >
+                    <a href="#almacenMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-warehouse"></i>
+                        Almacén
+                    </a>
+                    <ul class="collapse list-unstyled mr-auto" id="almacenMenu" data-parent="#acordion">
+                        <li>
+                            <a href="#" class="fas fa-caret-right">Realizar Inventario</a>
+                            <a href="#" class="fas fa-caret-right">Registrar Salidas</a>
+                            <a href="#" class="fas fa-caret-right">Registrar Entradas</a>
+                            <a href="#" class="fas fa-caret-right">Guía de Remisión</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+
+                <li >
+                    <a href="#productosMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-box-open"></i>
+                        Productos
+                    </a>
+                    <ul class="collapse list-unstyled mr-auto" id="productosMenu" data-parent="#acordion">
+                        <li>
+                            <a href="#" class="fas fa-caret-right">Productos</a>
+                            <a href="#" class="fas fa-caret-right">Lineas</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#proveedoresMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-address-book"></i>
+                        Proveedores
+                    </a>
+                    <ul class="collapse list-unstyled mr-auto" id="proveedoresMenu" data-parent="#acordion">
+                        <li>
+                            <a href="#" class="fas fa-caret-right">Lista de provedores</a>
+                            <a href="#" class="fas fa-caret-right">Añadir proveedor</a>
+                        </li>
+                    </ul>
+                </li>
+
+                 <li >
+                    <a href="#tallerMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-toolbox"></i>
+                        Taller
+                    </a>
+                    <ul class="collapse list-unstyled mr-auto" id="tallerMenu" data-parent="#acordion">
+                        <li>
+                            <a href="{% url 'taller:lista_orden_trabajo' %}" class="fas fa-caret-right">Orden De trabajo</a>
+                            <a href="#" class="fas fa-caret-right">Añadir Pedido</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#reportesMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-file-signature"></i>
+                        Reportes
+                    </a>
+                    <ul class="collapse list-unstyled mr-auto" id="reportesMenu" data-parent="#acordion">
+                        <li>
+                            <a href="#" class="fas fa-caret-right">Ingresos de productos</a>
+                            <a href="#" class="fas fa-caret-right">Salidas de productos</a>
+                            <a href="#" class="fas fa-caret-right">Kardex</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#empleadoMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-male"></i>
+                        Empleados
+                    </a>
+                    <ul class="collapse list-unstyled mb-auto" id="empleadoMenu" data-parent="#acordion">
+                        <li>
+                            <a href="#" class="fas fa-caret-right">Registrar Nuevo Empleado</a>
+                            <a href="#" class="fas fa-caret-right">Lista de Empleados</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#configMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-cogs"></i>
+                        Configuración
+                    </a>
+                    <ul class="collapse list-unstyled" id="configMenu" data-parent="#acordion">
+                    	<li>
+                    		<a id="empresa" href="#" class="fas fa-caret-right">Empresa</a>
+                            <a id="almacen" href="" class="fas fa-caret-right">Almacenes</a>
+                            <a id="usuario" href="" class="fas fa-caret-right">Crear Usuarios</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+    <div id="PaginaContenido" >
+        {% block breadcrumb %}  <!-- Indica la ubicación de la página actual dentro de una jerarquía de navegación -->
+        {% endblock breadcrumb%}
+		{% block pagecontent %}
+
+		{% endblock pagecontent %}
+    
+	</div>
+</div>
+{% endblock content %}
+
+{# Extra javaScript ------------------------------------------------------------------------------------- #}
+{% block extrajs %}<!-- Extra scripts que puede ser añadidos por un modulo en especifico" -->
+
+
+{% endblock extrajs %}

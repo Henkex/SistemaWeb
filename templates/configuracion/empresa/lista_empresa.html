@@ -1,0 +1,72 @@
+{% extends 'almacen/index.html' %}
+{% load static from staticfiles %}
+{% block breadcrumb %}  
+
+{% endblock breadcrumb%}
+
+{% block pagecontent %}
+ <button onclick="return abrir_modal('{% url 'configuracion:crear_empresa' %}')" class="btn btn-outline-success">Registrar Nueva Empresa</button>
+ <hr>
+<div class="card-deck" align="center">
+	{% if  object_list %}
+		{% for empresa in object_list  %}
+			<div class="card shadow border-secondary mb-3 container" align="center" style="min-width:16rem; max-width: 32rem">
+	    		<div class="card-body">
+	      		<h5 class="card-title">{{empresa.emp_razon_social}}</h5>
+
+	      		<table width="100%">
+	      			<tr>
+	      				<td><STRONG>RUC:</STRONG></td>
+	      				<td>{{ empresa.emp_ruc }}</td>
+
+	      			</tr>
+	      			
+	      			<tr>
+	      				<td><STRONG>Representante Legal:</STRONG></td>
+	      				<td>{{ empresa.emp_rep_legal }}</td>
+	      			</tr>
+	      		
+	      			<tr>
+	      				<td><STRONG>Dirección Legal:</STRONG></td>
+	      				<td>{{ empresa.emp_direccion }}</td>
+	      			</tr>
+	      			
+	      		</table>
+	      		<div class="card-footer">
+      				<button onclick="return abrir_modal('{% url 'configuracion:borrar_empresa' empresa.pk %}')" class="btn btn-outline-danger" type="button">
+      					<i class="fas fa-trash"></i>
+                    </button>
+
+                    <button onclick="return abrir_modal('{% url 'configuracion:actualizar_empresa' empresa.pk %}')" class="btn btn-outline-primary" type="button">
+      					<i class="fas fa-edit"></i><strong>Editar</strong>
+      				</button>
+    			</div>
+	    		</div>
+
+			</div>	
+
+		{% endfor %}
+
+	{% else %}
+	<div class="container">
+		<div class="card ">
+			
+      		<h5 class="card-title text-success">Registro de Empresa</h5>
+      		<p class="card-text text-danger">No se ha registrado ninguna empresa aún</p>
+    	</div>
+	</div>
+	{% endif %}
+</div>
+<!-- modal donde se carga los formularios exteriores -->
+<div id="popup" class="modal fade" role="dialog">
+
+</div>
+
+{% endblock pagecontent %}
+
+{% block extrajs %}
+<script type="text/javascript">
+	document.getElementById("configMenu").classList.add('show');
+	document.getElementById("empresa").classList.add('custom-select');
+</script>
+{% endblock extrajs %}

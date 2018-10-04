@@ -1,0 +1,57 @@
+{% extends 'almacen/index.html' %}
+{% load static from staticfiles %}
+
+{% block breadcrumb %}  
+{% endblock breadcrumb%}
+
+{% block pagecontent %}
+<div class="container">
+	<form method="post" enctype="multipart/form-data" accept-charset="utf-8">
+		{% csrf_token %}
+		{% for field in movimiento_form %}
+		<div class="form-group{% if field.errors %} invalid{% endif %}">
+			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+			{{ field }}
+			{% for error in field.errors %}
+          	<p class="help-block">{{ error }}</p>
+        	{% endfor %}
+      	</div>
+    	{% endfor %}
+
+    	{% for field in guia_form %}
+		<div class="form-group{% if field.errors %} invalid{% endif %}">
+			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+			{{ field }}
+			{% for error in field.errors %}
+          	<p class="help-block">{{ error }}</p>
+        	{% endfor %}
+      	</div>
+    	{% endfor %}
+
+    	
+    	{{ formset.management_form }}
+    	{% for field in formset	 %}
+    	<div class="formset">
+    		<div class="form-group{% if field.errors %} invalid{% endif %}">
+    			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    			{{ field }}
+    			{% for error in field.errors %}
+    			<p class="help-block">{{ error }}</p>
+    			{% endfor %}
+    		</div>
+    	</div>
+    	{% endfor %}
+
+    	 <div class="submit-row  col-xs-12">
+    	 	<input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn-success btn-lg" type="submit" value="Registrar Entrada" />
+    	 	<a class ="col-sm-offset-1 col-sm-3  col-xs-12 btn btn-danger btn-lg" href="">Volver</a>
+    	 </div>
+
+	</form>
+	
+</div>
+
+{% endblock pagecontent %}
+
+{% block extrajs %}
+{% endblock extrajs %}

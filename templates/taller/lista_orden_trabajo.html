@@ -1,0 +1,66 @@
+{% extends "almacen/index.html" %}
+{% load static from staticfiles %}
+
+{% block breadcrumb %}  
+{% endblock breadcrumb%}
+
+{% block pagecontent %}
+<div class="container-fluid">
+	<div class="panel-heading">
+		<ul class="nav nav-tabs nav-justified" role="tablist">
+			<li class="nav-item" >
+				<a href="#" class="nav-link active" href="#profile" role="tab" data-toggle="tab">Lista de Ordenes de trabajo</a>
+			</li>
+			<li class="nav-item">
+				<a href="{% url 'taller:orden_trabajo' %}">Nuevo Orden de trabajo</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="panel-body">
+		<div class="panel  panel-primary">
+      <hr>
+            <div class="panel-body container-fluid">
+                <div class="table-responsive">
+                    <table id="datatable-responsive" class="table table-striped display">
+                        <thead>
+                            <tr  align="center">
+                                <th width="5%">Código Orden</th>
+                                <th width="30%">Autorizado por</th>
+                                <th width="30%">Mecánico</th>
+                                <th width="5%">Padrón</th>
+                                <th width="30%">Fecha de pedido</th>
+                                <th width="10%">Estado</th>
+                                <th width="10%">Detalles</th>
+                            </tr>
+                        </thead>
+	
+                        <tbody>
+                            {% for ordenTrabajo in object_list %}
+                            <tr valign="middle">
+                                <td align="center">{{ ordenTrabajo.ot_codigo }}</td>
+                                <td align="center">{{ ordenTrabajo.fk_id_usuario.get_full_name }}</td>
+                                <td align="center">{{ ordenTrabajo.fk_id_empleado }}</td>
+                                <td align="center">{{ ordenTrabajo.fk_id_padron }}</td>
+                                <td align="center">{{ ordenTrabajo.ot_fecha_pedido	 }}</td>
+                                <td align="center">{{ ordenTrabajo.get_ot_estado_display }}</td>
+                                <td align="center">
+
+                                    <button onclick=""></i><strong>Detalle</strong>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+		
+	</div>
+	
+</div>
+{% endblock pagecontent %}
+
+{% block extrajs %}
+{% endblock extrajs %}

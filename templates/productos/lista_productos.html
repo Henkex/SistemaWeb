@@ -1,0 +1,64 @@
+{% extends 'almacen/index.html' %}
+{% load static from staticfiles %}
+
+{% block pagecontent %}
+<button onclick="return abrir_modal('{% url 'productos:crear_producto' %}')" class="btn btn-outline-success">Añadir producto</button>
+ <hr>
+<div class=" contenedor-lista">
+        <div class="panel  panel-primary">
+            <div class="panel-heading">
+                <span class="">PRODUCTOS</span>
+            </div>
+            <div class="panel-body container-fluid">
+                <div class="table-responsive">
+                    <table id="datatable-responsive" class="table table-striped display">
+                        {% load static from staticfiles %}
+                        <thead>
+                            <tr  align="center">
+                                <th width="5%">Código</th>
+                                <th width="30%">Descripción</th>
+                                <th width="5%">Unidad de Medida</th>
+                                <th width="5%">Valor S/.</th>
+                                <th width="5%">Valor $/.</th>
+                                <th width="10%">Linea de producto</th>
+                                <th width="15%">Operaciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for producto in object_list %}
+                            <tr valign="middle">
+                                <td align="center">{{ producto.p_codigo }}</td>
+                                <td align="center">{{ producto.p_descripcion }}</td>
+                                <td align="center">{{ producto.p_unidad_de_medida }}</td>
+                                <td align="center">{{ producto.p_precio_soles   }}</td>
+                                <td align="center">{{ producto.p_precio_dolar }}</td>
+                                <td align="center">{{ producto.fk_id_linea_producto }}</td>
+                                <td align="center">
+                                    <button onclick="return abrir_modal('{% url 'productos:borrar_producto' producto.pk %}')" class="btn btn-outline-danger" type="button">
+                                    <i class="fas fa-trash"></i>
+                                    </button>
+
+                                    <button onclick="return abrir_modal('{% url 'productos:modificar_producto' producto.pk %}')" class="btn btn-outline-primary" type="button">
+                                    <i class="fas fa-edit"></i><strong>Editar</strong>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!-- modal donde se carga los formularios exteriores -->
+<div id="popup" class="modal fade" role="dialog">
+    {% include "productos/crear_editar_producto.html" with form=form %}
+</div>
+{% endblock pagecontent %}
+{% block extrajs %}
+<script type="text/javascript">
+    document.getElementById("productosMenu").classList.add('show');  
+</script>
+{% endblock extrajs %}

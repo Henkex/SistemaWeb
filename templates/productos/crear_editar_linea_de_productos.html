@@ -1,0 +1,38 @@
+<!-- Modal Agregar Empresa --> 
+<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-content">
+		<!-- Encabezado -->
+		{% if object %}
+		<form role='form' action="{% url 'productos:actualizar_linea' object.pk %}" method="Post" accept-charset="utf-8">
+			<div class="modal-header">
+				<h4 class="modal-title">Editar Linea de Producto</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+		{% else %}
+			<form role='form' action="{% url 'productos:crear_linea' %}" method="Post" accept-charset="utf-8">
+			<div class="modal-header">
+				<h4 class="modal-title">Registrar Nueva Linea</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+		{% endif %}
+		
+		
+		<!-- Cuerpo -->
+		{% csrf_token %}
+		<div class="form-group form-group mx-sm-3 mb-2">
+			{{ form.as_p}}
+		</div>
+		<!-- Footer -->
+			<div class="modal-footer">
+				<div class="col-lg-12 text-right">
+                     <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
+                     <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
+                     Cancelar
+                 	</button>
+                </div>
+			</div>
+		</form>	
+	</div>
+	
+</div>

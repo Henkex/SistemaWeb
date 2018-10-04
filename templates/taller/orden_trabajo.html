@@ -1,0 +1,94 @@
+{% extends "almacen/index.html" %}
+{% load static from staticfiles %}
+
+{% block breadcrumb %}  
+{% endblock breadcrumb%}
+
+{% block pagecontent %}
+
+<div class="container-fluid">
+   
+    <div class="panel-heading">
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item" >
+                <a href="{% url 'taller:lista_orden_trabajo' %}" role="tab">Lista de Ordenes de trabajo</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">Nuevo Orden de trabajo</a>
+            </li>
+        </ul>
+    </div>
+    <hr>
+    
+    <div class="panel-body">
+        <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
+            <div class="submit-row  col-xs-12" align="center">
+                <input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn-success btn-lg" type="submit" value="Registrar Orden de trabajo" />
+            </div>
+
+            {% csrf_token %}
+
+            <div class="row">
+                    <div class="form-field form-subtitle col-sm-11">
+                                <span> Orden de trabajo </span>
+                    </div>
+                {% for field in otmovimiento_form %}
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="form-field col-sm-11">
+                            {{ field.errors }}
+                            <div class="input-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                {% endfor %}
+
+                {% for field in ordentrabajo_form %}
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="form-field col-sm-11">
+                            {{ field.errors }}
+                            <div class="input-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                {% endfor %}
+
+                <div class="form-field form-subtitle col-sm-11">
+                            <span> Lista de Productos</span>
+                </div>
+
+                {{ formset.management_form }}
+                    {% for form in formset %}
+                    <div class="row form-row spacer">
+                        <div class="col-8">
+                            <div class="input-group">
+                                {{form}}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
+            </div>
+        </form>
+        
+    </div>
+    
+    
+	
+</div>
+
+{% endblock pagecontent %}
+
+{% block extrajs %}
+{% endblock extrajs %}

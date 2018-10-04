@@ -1,0 +1,30 @@
+{% extends 'almacen/index.html' %}
+
+{% block pagecontent %}
+{% if object_list %}
+	{% for empresa in object_list  %}
+		<span id="{{empresa.fk_id_empresa.id_empresa}}" >{{ empresa.fk_id_empresa.emp_razon_social }}</span>
+		{% if object_list %}
+			{% for listalmacen in object_list %}
+				<span>{{listalmacen.al_nombre}}</span>
+			{% endfor %}
+		{% else %}
+			<span>No tiene Almacen Designado</span>
+		{% endif %}
+	{% endfor %}
+{% else %}
+	<span>No Existen Registros de empresas ni de almacen</span>
+{% endif %}
+
+<!-- {% for listalmacen in object_list %}
+				<span>{{listalmacen.al_nombre}}</span>
+				<span>{{ listempresa.fk_id_empresa.emp_razon_social }}</span>
+			{% endfor %}
+
+{% endblock pagecontent %} -->
+
+{% block extrajs %}
+<script type="text/javascript">
+	document.getElementById("adminMenu").classList.add('show');
+</script>
+{% endblock extrajs %}

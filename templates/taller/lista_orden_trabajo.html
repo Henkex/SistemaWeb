@@ -2,6 +2,12 @@
 {% load static from staticfiles %}
 
 {% block breadcrumb %}  
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Taller</li>
+        <li class="breadcrumb-item active" aria-current="page">Lista de Ordenes de trabajo</li>
+    </ol>
+</nav>
 {% endblock breadcrumb%}
 
 {% block pagecontent %}
@@ -25,13 +31,13 @@
                     <table id="datatable-responsive" class="table table-striped display">
                         <thead>
                             <tr  align="center">
-                                <th width="5%">Código Orden</th>
-                                <th width="30%">Autorizado por</th>
-                                <th width="30%">Mecánico</th>
-                                <th width="5%">Padrón</th>
-                                <th width="30%">Fecha de pedido</th>
-                                <th width="10%">Estado</th>
-                                <th width="10%">Detalles</th>
+                                <th>Código Orden</th>
+                                <th>Autorizado por</th>
+                                <th>Mecánico</th>
+                                <th>Padrón</th>
+                                <th>Fecha de pedido</th>
+                                <th>Estado</th>
+                                <th>Detalles</th>
                             </tr>
                         </thead>
 	
@@ -63,4 +69,9 @@
 {% endblock pagecontent %}
 
 {% block extrajs %}
+<script type="text/javascript">
+    document.getElementById("tallerMenu").classList.add('show');
+    document.getElementById("Orden_trabajo").classList.add('custom-select');
+   
+</script>
 {% endblock extrajs %}

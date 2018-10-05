@@ -69,11 +69,7 @@ DetalleMovientoFormSet  = inlineformset_factory(Movimiento,DetalleMovimiento,ext
 
 #Orden de trabajo Forms  ----------------------------------------------------------------------------------
 class OrdenTrabajoForm(forms.ModelForm):
-  ot_codigo       = forms.CharField(max_length=11,
-                                    widget=forms.TextInput(attrs={'class':'form-control',
-                                                                       'placeholder':'Nro Orden de trabajo',
-                                                                       'required':True}),
-                                    label="Nº Orden de trabajo")
+ 
   fk_id_empleado  = forms.ModelChoiceField(queryset=Empleado.objects.all(),empty_label="Escoja el Mecánico",
                                             widget=forms.Select(attrs={'class':'form-control chosen-select',
                                                                      'placeholder':'Codigo',
@@ -83,14 +79,14 @@ class OrdenTrabajoForm(forms.ModelForm):
                                             widget=forms.Select(attrs={'class':'form-control chosen-select',
                                                                      'placeholder':'Codigo',
                                                                      'required':True}),
-                                            label='Vehiculo al que se realiza el servicio')
+                                            label='Vehículo al que se realiza el servicio')
   ot_kilometraje  = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control',
                                                                   'placeholder':'kilometraje del padron',
                                                                   'required':True}),
                                   label="Kilometraje")
   class Meta:
     model = OrdenTrabajo
-    fields = ('ot_codigo','ot_kilometraje','fk_id_empleado','fk_id_padron')
+    fields = ('ot_kilometraje','fk_id_empleado','fk_id_padron')
     
 class OTDetalleMovimientoForm(forms.ModelForm):
     fk_id_producto      = forms.ModelChoiceField(queryset=Producto.objects.filter(p_alta_estado=True),

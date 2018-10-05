@@ -27,7 +27,11 @@ body {
     padding-top: 40px;
 }
 .form-label{
-    color: #000000FF;
+    color: #000000FF; 
+}
+
+.label-default{
+    background: #6191B0;
 }
 
 .form-panel{
@@ -91,8 +95,9 @@ body {
 }
 
 .navbar-logo{
-    max-width: 140px;
-    max-height: 31px;
+    padding-top: 10px;
+    max-width: 250px;
+    max-height: 130px;
 
 }
 .navbar-informacion{
@@ -100,12 +105,18 @@ body {
 }
 
 .navbar {
-    padding: 15px 10px;
+    /*padding: 15px 10px;*/
     background: #fff;
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    background: red;
+    border-bottom: 2px solid #4b5162;
+}
+
+.navbar li {
+    font-size: 1.5em;
 }
 
 .navbar-btn {
@@ -202,9 +213,13 @@ span {
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
+    padding-top: 25px;
     width: 100%;
   	border-bottom: 1px solid #e7e7e7;
+    text-align:center;
+    color: yellow;
+    background: black;
+    box-shadow: black;
 }
 
 #sidebar .sidebar-header strong {
@@ -214,7 +229,7 @@ span {
 
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #47748b;
+    /*border-bottom: 1px solid #47748b;*/
 }
 
 #sidebar ul li a {
@@ -257,28 +272,6 @@ ul ul a {
     border-bottom: 1px solid #4b5162;
 }
 
-ul.CTAs {
-    padding: 20px;
-}
-
-ul.CTAs a {
-    text-align: center;
-    font-size: 0.9em !important;
-    display: block;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-a.download {
-    background: #fff;
-    color: #7386D5;
-}
-
-a.article,
-a.article:hover {
-    background: #6d7fcc !important;
-    color: #fff !important;
-}
 
 /* ---------------------------------------------------
     SIDEBAR MEDIAQUERIES
@@ -355,6 +348,29 @@ a.article:hover {
     background: #F8F8F8;
     color: #000;
     width: 100%;
-    padding: 20px;
+    padding-top: 15px;
+    /*padding: 15px;*/
     min-height: 87vh;
+}
+
+#formulario-datos {
+    /*padding: 50px;*/
+    background-image: url('../img/formulario.jpg');
+    font-size: 1.5em;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+.breadcrumb{
+    background-color: #f8f8f8;
+    border-radius: 0;
+    padding: 5px 15px;
+    top:50px;
+    width: 100%;
+    z-index: 3;
+    box-shadow: 2px 2px 3px #69717E;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd){
+    color:black;
 }

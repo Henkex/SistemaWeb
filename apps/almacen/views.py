@@ -22,13 +22,25 @@ class InventarioAdmin(LoginRequiredMixin,View):
 # Orden de trabajo---------------------------------------------------------------------------------------
 class OrdenTrabajoLista(LoginRequiredMixin,View):
 	def get(self,request):
-		object_list 	= OrdenTrabajo.objects.filter(ot_estado='1')
+		object_list 	= OrdenTrabajo.objects.filter(ot_estado='1').order_by('ot_codigo')
 		template_name 	= 'taller/lista_orden_trabajo.html'
 		return render(request,template_name,locals())
 
 class OrdenTrabajoView(LoginRequiredMixin,View):
 	template_name	=	'taller/orden_trabajo.html'
 	def get(self,request):
+		# LLamo al ultimo objeto de OrdenTrabajo creado
+		if OrdenTrabajo.objects.exists():
+			orden 				=	OrdenTrabajo.objects.latest('id')
+			# lo almaceno en una variable y le sumo 1
+			id_orden			= 	orden.id
+			codigo 				= 	id_orden + 1
+		else:
+			# Si no existe ningun objeto OrdenTrabajo asigno un codigo inicial
+			codigo 				=	1
+		# codigo_orden esta formateado y listo para ser llamado en el template
+		codigo_orden 		=	"ODT-"+str(codigo).zfill(7)
+		# Formularios que llamo
 		ordentrabajo_form	=	OrdenTrabajoForm
 		formset 			=	OTDetalleMovientoFormSet(prefix='formset')
 		return  render(request,self.template_name,locals())
@@ -40,10 +52,14 @@ class OrdenTrabajoView(LoginRequiredMixin,View):
 		movimiento 			=	Movimiento()
 		if ordentrabajo_form.is_valid() and formset.is_valid():
 			movimiento.save()
-			nuevo_ot 	=	ordentrabajo_form.save(commit=False)
+			nuevo_ot 					=	ordentrabajo_form.save(commit=False)
 			nuevo_ot.fk_id_movimiento	=	movimiento
 			nuevo_ot.ot_fecha_pedido	=	timezone.now()
 			nuevo_ot.fk_id_usuario		=	request.user
+			# Grabo el formulario
+			nuevo_ot.save()
+			# Instancio el formulario guardado y llamo su ID para crear el codigo de OrdenTrabajo
+			nuevo_ot.ot_codigo			=	"ODT-"+str(nuevo_ot.id).zfill(7)
 			nuevo_ot.save()	
 
 			detalle_pedido = OTDetalleMovientoFormSet(request.POST,prefix='formset',instance=movimiento,)

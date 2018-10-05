@@ -5,7 +5,7 @@
 {# Barra de navegación de la interfaz de usuario-------------------------------------------------------------- #}
 <div class="container">
 
-	<nav id="topbar" class="navbar navbar-expand-lg navbar-toggleable-md navbar-light bg-light fixed-top">
+	<nav class="navbar navbar-expand-lg navbar-toggleable-md navbar-light bg-light fixed-top  shadow-lg">
 		<div class="float-left">
 			<button type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
@@ -13,7 +13,7 @@
 		</div>
 
         <a href="/" class="navbar-brand breadcrumb-nd mr-auto">
-            Real
+            <img  class="img-fluid navbar-logo" src="{% static 'img/logo.png' %}"/>
         </a>
 
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#UserInterface">
@@ -34,13 +34,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link far fa-user dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                         Bienvenido
-                        <strong>{{ user.first_name }}</strong>
-                        <strong>{{ user.last_name }}</strong>
+                        <strong>{{ user.get_full_name }}</strong>
                     </a>
                     <div class="dropdown-menu mr-auto" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" >Son las 13 horas</a>
-                        <a class="dropdown-item" >Ultima Incidencia</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout">Cerrar sesión</a>
                     </div>
                 </li>
@@ -54,9 +50,29 @@
 <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar" class="side-nav fixed sn-bg-4">
-            <div class="sidebar-header">
-                <h3>Almacen</h3>
-                <strong>AL</strong>
+            <div class="sidebar-header rounded shadow">
+            {% if request.user.is_superuser %}
+
+                <h3><i class="fas fa-address-card"></i> Administrador </h3>
+                <strong><i class="fas fa-address-card"></i> AD</strong>
+
+            {% elif request.user.is_jefe_taller %}
+
+                <h3><i class="fas fa-wrench"></i> Jefe de Taller</h3>
+                <strong><i class="fas fa-wrench"></i> JT</strong>
+
+            {% elif request.user.is_jefe_alm %}
+            
+                <h3><i class="fas fa-chalkboard-teacher"></i> Jefe de Almácen</h3>
+                <strong><i class="fas fa-chalkboard-teacher"></i> AL</strong>
+
+            {% elif request.user.is_operario_alm %}
+            
+                <h3><i class="fas fa-dolly-flatbed"></i>Operario Almácen</h3>
+                <strong>OA<i class="fas fa-dolly-flatbed"></i></strong>
+            
+            {% endif %}
+
             </div>
 
             <ul id="acordion" class="list-unstyled components" role="tablist">
@@ -72,7 +88,7 @@
                             <a href="#" class="fas fa-caret-right">Realizar Inventario</a>
                             <a href="#" class="fas fa-caret-right">Registrar Salidas</a>
                             <a href="#" class="fas fa-caret-right">Registrar Entradas</a>
-                            <a href="#" class="fas fa-caret-right">Guía de Remisión</a>
+                            <a href="{% url 'almacen:guia_remision' %}" class="fas fa-caret-right">Guía de Remisión</a>
                         </li>
                     </ul>
                 </li>
@@ -111,7 +127,7 @@
                     </a>
                     <ul class="collapse list-unstyled mr-auto" id="tallerMenu" data-parent="#acordion">
                         <li>
-                            <a href="{% url 'taller:lista_orden_trabajo' %}" class="fas fa-caret-right">Orden De trabajo</a>
+                            <a id="Orden_trabajo" href="{% url 'taller:lista_orden_trabajo' %}" class="fas fa-caret-right">Orden De trabajo</a>
                             <a href="#" class="fas fa-caret-right">Añadir Pedido</a>
                         </li>
                     </ul>
@@ -161,7 +177,7 @@
             </ul>
         </nav>
 
-    <div id="PaginaContenido" >
+    <div id="PaginaContenido">
         {% block breadcrumb %}  <!-- Indica la ubicación de la página actual dentro de una jerarquía de navegación -->
         {% endblock breadcrumb%}
 		{% block pagecontent %}

@@ -67,6 +67,9 @@ class Padron(models.Model):
     pdn_estado		=	models.BooleanField(default=True)
     pdn_kilometraje	=	models.PositiveIntegerField()
 
+    def __str__(self):
+    	return str(self.pdn_numero)
+
 ESTADO_CHOICES = (
         ('1','En Proceso'),
         ('2','Cumplido'),

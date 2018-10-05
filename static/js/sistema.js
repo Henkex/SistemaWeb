@@ -123,6 +123,4 @@ $(document).ready(function(){
     datatableresponsive.responsive = true;
     $('#datatable-responsive').DataTable(datatableresponsive);
 
-
-
 })

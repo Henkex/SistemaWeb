@@ -1,7 +1,14 @@
 {% extends "almacen/index.html" %}
 {% load static from staticfiles %}
 
-{% block breadcrumb %}  
+{% block breadcrumb %} 
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Taller</li>
+        <li class="breadcrumb-item"><a href="/taller/orden_trabajo/">Lista de Ordenes de trabajo</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Nueva Orden de trabajo</li>
+    </ol>
+</nav> 
 {% endblock breadcrumb%}
 
 {% block pagecontent %}
@@ -20,66 +27,116 @@
     </div>
     <hr>
     
-    <div class="panel-body">
+    <div class="panel-body ">
         <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
-            <div class="submit-row  col-xs-12" align="center">
-                <input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn-success btn-lg" type="submit" value="Registrar Orden de trabajo" />
-            </div>
-
             {% csrf_token %}
 
-            <div class="row">
-                    <div class="form-field form-subtitle col-sm-11">
-                                <span> Orden de trabajo </span>
-                    </div>
-                {% for field in otmovimiento_form %}
-                <div class="col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        <div class="form-field col-sm-11">
-                            {{ field.errors }}
-                            <div class="input-group">
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                {{ field }}
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                
-                {% endfor %}
+            <div class="form-row form-subtitle col-sm-11 justify-content-between">
+                <span> Orden de trabajo Nº {{codigo_orden}}</span>
+                <input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn btn-outline-success" type="submit" value="Registrar Orden" />
+            </div>
 
-                {% for field in ordentrabajo_form %}
-                <div class="col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        <div class="form-field col-sm-11">
-                            {{ field.errors }}
-                            <div class="input-group">
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                {{ field }}
+
+            <div id="formulario-datos" class="rounded border border-dark ">
+
+                <div class="form-row justify-content-around">
+
+                    <div class="col-sm-5 col-xs-5">
+                        <div class="form-group">
+                            <div class="no-padding-top form-field col-sm-11 ">
+                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                                Número de Orden de Trabajo </label></strong>
+                                <div >
+                                    <span align="center" class="text-white"> <strong>{{codigo_orden}}</strong>  </span>
+                                </div>
                             </div>
-                            
-                        </div>
+                        </div> 
                     </div>
+                    
+                    <div class="col-sm-5 col-xs-5">
+                        <div class="form-group">
+                            <div class="no-padding-top form-field col-sm-11">
+                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                                {{ ordentrabajo_form.fk_id_empleado.label }}</label></strong>
+                                {{ ordentrabajo_form.fk_id_empleado.errors }}
+                                <div class="input-group">
+                                    {{ ordentrabajo_form.fk_id_empleado  }}
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    
                 </div>
-                
-                {% endfor %}
+
+                <div class="form-row justify-content-around">
+
+                    <div class="col-sm-5 col-xs-5 ">
+                        <div class="form-group">
+                            <div class="no-padding-top form-field col-sm-11">
+                                <strong>
+                                    <label class="p-1 mb-2 rounded bg-dark text-white">
+                                    {{ ordentrabajo_form.fk_id_padron.label }}</label>
+                                </strong>
+                                {{ ordentrabajo_form.fk_id_padron.errors }}
+                                <div class="input-group">
+                                    {{ ordentrabajo_form.fk_id_padron  }}
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="col-sm-5 col-xs-5 ">
+                        <div class="form-group">
+                            <div class="no-padding-top form-field col-sm-11 col-md-11 col-xl-5">
+                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                                {{ ordentrabajo_form.ot_kilometraje.label }}</label></strong>
+                                {{ ordentrabajo_form.ot_kilometraje.errors }}
+                                <div class="input-group">
+                                    {{ ordentrabajo_form.ot_kilometraje  }}
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                </div>
+
+            </div>
 
                 <div class="form-field form-subtitle col-sm-11">
                             <span> Lista de Productos</span>
                 </div>
+                <div class="container-fluid rounded border border-dark ">
+                    <div class="form-row justify-content-around">
+                        {{ formset.management_form }}
+                        {% for form in formset %}
 
-                {{ formset.management_form }}
-                    {% for form in formset %}
-                    <div class="row form-row spacer">
-                        <div class="col-8">
-                            <div class="input-group">
-                                {{form}}
-                            </div>
+                        <div class="no-padding-top form-field col-sm-11 col-md-11 col-xl-5">
+                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                                {{ form.fk_id_producto.label }}</label></strong>
+                                {{ form.fk_id_producto.errors }}
+
+                                <div class="input-group">
+                                    {{ form.fk_id_producto  }}
+                                </div>
                         </div>
+
+                        <div class="no-padding-top form-field col-sm-11 col-md-11 col-xl-5">
+                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                                {{ form.dm_cant_solicitada.label }}</label></strong>
+                                {{ form.dm_cant_solicitada.errors }}
+
+                                <div class="input-group">
+                                    {{ form.dm_cant_solicitada  }}
+                                </div>
+                                 <hr>
+                        </div>
+
+                        {% endfor %}
+
                     </div>
-                    {% endfor %}
                 
-            </div>
+                </div>
+            
         </form>
         
     </div>

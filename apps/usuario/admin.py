@@ -18,7 +18,7 @@ class MyUserCreationForm(UserCreationForm):
         username = self.cleaned_data['username']
         try:
             Usuario.objects.get(username=username)
-        except User.DoesNotExist:
+        except Usuario.DoesNotExist:
             return username
         raise forms.ValidationError(self.error_messages['duplicate_username'], code='duplicate_username',)
 

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.usuario',
     'apps.proveedor',
     # Apps de terceros
+    'popup_field',
 ]
 
 MIDDLEWARE = [

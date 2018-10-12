@@ -1,56 +1,91 @@
-{% extends 'almacen/index.html' %}
+{% extends "almacen/index.html" %}
 {% load static from staticfiles %}
 
-{% block breadcrumb %}  
+
+{% block breadcrumb %} 
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Almacén</li>
+        <li class="breadcrumb-item active" aria-current="page">Parte de ingreso</li>
+    </ol>
+</nav> 
 {% endblock breadcrumb%}
 
 {% block pagecontent %}
 
-<div class="container">
-	<form method="post" enctype="multipart/form-data" accept-charset="utf-8">
-		{% csrf_token %}
-		{% for field in parte_ingreso_form %}
-		<div class="form-group{% if field.errors %} invalid{% endif %}">
-			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-			{{ field }}
-			{% for error in field.errors %}
-          	<p class="help-block">{{ error }}</p>
-        	{% endfor %}
-      	</div>
-    	{% endfor %}
 
-    	{% for field in movimiento_form	 %}
-		<div class="form-group{% if field.errors %} invalid{% endif %}">
-			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-			{{ field }}
-			{% for error in field.errors %}
-          	<p class="help-block">{{ error }}</p>
-        	{% endfor %}
-      	</div>
-    	{% endfor %}
+<div class="container-fluid pb-2">
+    
+    <div class="p-3 bg-light rounded shadow">
+        <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
+            {% csrf_token %}
 
-    	
-    	{{ formset.management_form }}
-    	{% for field in formset	 %}
-    	<div class="formset">
-    		<div class="form-group{% if field.errors %} invalid{% endif %}">
-    			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-    			{{ field }}
-    			{% for error in field.errors %}
-    			<p class="help-block">{{ error }}</p>
-    			{% endfor %}
-    		</div>
-    	</div>
-    	{% endfor %}
+            <div class="form-row form-subtitle col-sm-11 justify-content-between">
+                <strong><span>Ingreso de productos</span></strong>
+            </div>
+            <small class="pull-right">Fecha: {% now "d/m/Y" %}</small>
+            <div id="fomulario-datos" class="rounded border pr-5 pt-3 bg-light shadow">
+                
+                <div class="form-group row pl-4">
+                    <label  class="col-sm-6 col-md-4 col-lg-3 text-justify">
+                        <strong>{{ parte_ingreso_form.pi_codigo.label }}</strong>
+                    </label>
+                    <div class="col-sm-4 col-md-6 col-lg-4 ">
+                        {{ parte_ingreso_form.pi_codigo  }}
+                    </div>
+                </div>
 
-    	 <div class="submit-row  col-xs-12">
-    	 	<input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn-success btn-lg" type="submit" value="Registrar Entrada" />
-    	 	<a class ="col-sm-offset-1 col-sm-3  col-xs-12 btn btn-danger btn-lg" href="">Volver</a>
-    	 </div>
+                <div class="form-group row pl-4">
+                    <label  class="col-sm-6 col-md-4 col-lg-3 text-justify">
+                        <strong>{{ parte_ingreso_form.fk_id_proveedor.label }}</strong>
+                    </label>
+                    <div class="col-sm-2 col-md-3 col-lg-2 ">
+                        {{ parte_ingreso_form.fk_id_proveedor }}
+                    </div>
+                </div>
 
-	</form>
-	
+            </div>
+
+            <div class="form-field form-subtitle col-sm-11">
+                    <strong><span> Productos</span></strong>
+                    <input  class ="btn btn-outline-primary btn-lg rounded-circle" type="submit" value="Registrar Orden" /> 
+            </div>
+
+                <div class="container-fluid rounded border bg-light shadow pt-2">
+                    <div class="formset">
+                        {{ formset.management_form }}
+                            {% for form in formset %}
+
+                                {% if form.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ form.dm_cant_entrada.errors }}
+                                </div>
+                                {% endif %}
+
+                                <div class="form-group row pl-4">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                                        {{ form.fk_id_producto  }}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                                        {{ form.dm_cant_entrada  }}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                                        <button class="btn btn-success add-form-row rounded">
+                                        Añadir más
+                                        </button>
+                                     </div>
+                                </div>
+
+                            {% endfor %}
+
+                    </div>
+                    
+                </div>
+                
+        </form>
+    </div>  
 </div>
+    
 
 {% endblock pagecontent %}
 

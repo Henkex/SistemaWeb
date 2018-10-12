@@ -1,9 +1,12 @@
 from django.db import models
-
+from django.core.validators import MinLengthValidator,RegexValidator
 #Registro de empleado-------------------------------------------------------------------------------------
 class Empleado(models.Model):
     emp_nombre		=	models.CharField(max_length=45)
-    emp_apellido	=	models.CharField(max_length=45)
+    emp_apellido    =	models.CharField(max_length=145)
+    telf_regex      =   RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El numero telefonico debe tener el formato: '+999999999'. hasta 12 digitos.")
+    emp_telf        =   models.CharField(validators=[telf_regex], max_length=12, blank=True)
+    emp_estado      =   models.BooleanField(default=True)
     def __str__(self):
     	return self.emp_nombre+' '+self.emp_apellido
 #Registro de usuario--------------------------------------------------------------------------------------

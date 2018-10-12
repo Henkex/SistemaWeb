@@ -1,0 +1,94 @@
+{% extends "almacen/index.html" %}
+{% load static from staticfiles %}
+
+{% block breadcrumb %}  
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Almacén</li>
+        <li class="breadcrumb-item active" aria-current="page">Lista de Ordenes de trabajo</li>
+    </ol>
+</nav>
+{% endblock breadcrumb%}
+
+{% block pagecontent %}
+<div class="container-fluid pl-5 pr-5 pb-2">
+        <div>
+            <strong>Inventario de almacén</strong>
+        </div>
+    <form method="post" enctype="multipart/form-data" accept-charset="utf-8" max-width="42" max-height="42">
+        
+    <div class="bg-light rounded shadow p-3">
+       
+        <div class="row p-3">
+            <img src="{% static 'img/sistema/almacen.png' %} " style="width:150px;height:150px;">
+
+            <div class="col">
+                <div class="row pb-4">
+                    <label class="col-sm-12 col-md-12 col-lg-3 text-justify">
+                          <strong>Mes del Inventario: </strong>  
+                    </label>
+
+                    <div class="col-sm-12 col-md-12 col-lg-9">
+                        <strong>{{inventario.getMes}}</strong>
+                    </div>                    
+                </div>
+
+                <div class="row pb-4">
+                    <label class="col-sm-12 col-md-12 col-lg-3 text-justify">
+                           <strong>Generación del inventario: </strong>
+                    </label>
+                    <div class="col-sm-12 col-md-12 col-lg-9">
+                        <strong>{{inventario.inv_fecha_inventario}}</strong>
+                    </div>                    
+                </div>
+
+                <div class="row pb-4">
+                    <label class="col-sm-12 col-md-12 col-lg-3 text-justify">
+                           <strong>Observaciones: </strong>
+                    </label>
+                    <div class="col-sm-12 col-md-12 col-lg-9">
+                        <strong>{{inventario_form.inv_observaciones}}</strong>
+                    </div>                    
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    
+    <hr>
+
+        {% csrf_token %}
+            <div class="formset">
+                        {{ formset.management_form }}
+                                <table id="datatable-responsive" class="table table-striped display">
+                                    <thead>
+                                        <tr>
+                                            <th width="15%">Línea de producto</th>
+                                            <th width="35%">Producto</th>
+                                            <th width="15%">Stock Registrado</th>
+                                            <th width="15%">Stock Físico</th>
+                                        </tr>
+                                    </thead>
+                                    {% for form in formset %}
+                                    
+                                    <tbody>
+                                        <tr>
+                                            {{form.id}}
+                                            <td width="15%">{{form.fk_id_linea}}</td>
+                                            <td width="35%">{{form.fk_id_producto}}</td>
+                                            <td width="15%">{{form.di_stock_logico}}</td>
+                                            <td width="15%">{{form.di_stock_fisico}}</td>
+                                        </tr>
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                    </div>
+
+
+            <input  class ="btn btn-outline-primary btn-lg rounded-circle" type="submit" value="Registrar Orden" /> 
+        </form>
+    
+</div>
+        
+        {% endblock pagecontent %}

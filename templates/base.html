@@ -11,7 +11,11 @@
 
     <title>Sistema Web</title>
 
-    <link rel="stylesheet" href="{% static 'plugins/DataTables/datatables.min.css' %}"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+    <!-- Datatables Core CSS -->
+    <link href="{% static 'plugins/DataTables/DataTables/css/dataTables.bootstrap4.css' %}"/>
 
      <!-- Bootstrap4 Core CSS -->
     <link href="{% static 'plugins/bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -30,25 +34,21 @@
 
 </head>
 
-<body>
+<body onload="myFunction()" style="margin:0;">
 
     {% block content %}     <!-- Aqui se inserta el contenedor del modulo -->
     {% endblock content %}
 
-    {# {% include 'navbar.html' %} #}
+                        <!-- Sección de archivos JavaScript -->
 
-</body>
-<footer class="page-footer bg-inverse">
-  <div class="footer-copyright text-center py-3">© 2018 Real Star
-  </div>
-</footer>
-
-    <!-- jQuery -->
+     <!-- jQuery -->
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 
     <!-- Bootstrap4 Core JavaScript -->
     <script src="{% static 'plugins/bootstrap4/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'plugins/popper/popper.js' %}"></script>
+    <script src="{% static 'plugins/popper/popper.js' %}"></script> 
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
 
     <!-- Chosen selects Core JavaScript -->
     <script src="{% static 'plugins/chosen/chosen.jquery.js' %}"></script>
@@ -61,10 +61,18 @@
     <!-- JavaScript del sistema-->
     <script src="{% static 'js/sistema.js' %}"></script>
 
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
     <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     <script src="{% static 'js/jquery.formset.min.js' %}"></script>
    
     {% block extrajs %}<!-- Extra scripts que puede ser añadidos por un modulo en especifico" -->
     {% endblock extrajs %}
 
+</body>
+<footer class="page-footer bg-inverse">
+  <div class="footer-copyright text-center py-3">© 2018 Real Star
+  </div>
+</footer>
 </html>

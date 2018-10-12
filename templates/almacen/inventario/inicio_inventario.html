@@ -1,0 +1,83 @@
+{% extends "almacen/index.html" %}
+{% load static from staticfiles %}
+
+{% block breadcrumb %}  
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Almacén</li>
+        <li class="breadcrumb-item active" aria-current="page">Lista de Inventarios</li>
+    </ol>
+</nav>
+{% endblock breadcrumb%}
+
+{% block pagecontent %}
+<div class="bg-light p-3">
+	{% if inventario_activo %}
+		{% for inventario in inventario_activo %}
+		<a href="{% url 'almacen:registro_inventario' inventario.id %}" class="btn btn-outline-danger">Inventario en proceso del mes de:  <strong>{{inventario.getMes}} Activo</strong>
+		</a>
+		{% endfor %}
+	{% else %}
+		<a href="{% url 'almacen:crear_inventario' %}" class="btn btn-outline-danger">Iniciar inventario
+		</a>
+	{% endif %}
+
+</div>
+<hr>
+<div class="container-fluid">
+	<div class="table-responsive p-3 bg-light rounded shadow">
+		<table id="datatable-responsive" class="table table-striped display table-bordered">
+			<caption>Lista de Inventarios Realizados</caption>
+			<thead>
+				<tr>
+					<th>Mes del Inventario</th>
+					<th>Fecha</th>
+					<th>Referencias Totales</th>
+					<th>Número de diferencias</th>
+					<th>Índice de confiabilidad</th>
+				</tr>
+			</thead>
+			{% for lista in lista_inventario %}
+			<tbody>
+				<tr>
+					<td>{{lista.getMes}}</td>
+					<td>{{lista.getSimpleFecha}}</td>
+					<td>{{lista.inv_total_ref}}</td>
+					<td>{{lista.inv_total_dif}}</td>
+					<td>
+						<!-- Barra de progreso -->
+						<div class="progress">
+							{% if  lista.inv_confiabilidad > 75 %}
+
+							<div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" style="width: {{lista.intConfiabilidad}}%" aria-valuenow='{{lista.intConfiabilidad}}' aria-valuemin="0" aria-valuemax="100">
+  							{{lista.inv_confiabilidad}}%</div>
+
+							{% elif  lista.inv_confiabilidad > 50%}
+
+							<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: {{lista.intConfiabilidad}}%" aria-valuenow='{{lista.intConfiabilidad}}' aria-valuemin="0" aria-valuemax="100">
+  							{{lista.inv_confiabilidad}}%</div>
+
+  							{% elif lista.inv_confiabilidad > 25 %}
+
+  							<div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" style="width: {{lista.intConfiabilidad}}%" aria-valuenow='{{lista.intConfiabilidad}}' aria-valuemin="0" aria-valuemax="100">
+  							{{lista.inv_confiabilidad}}%</div>
+
+  							{% else %}
+
+  							<div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: {{lista.intConfiabilidad}}%" aria-valuenow='{{lista.intConfiabilidad}}' aria-valuemin="0" aria-valuemax="100">
+  							{{lista.inv_confiabilidad}}%</div>
+								
+							{% endif %}
+  							
+						</div>
+
+					</td>
+				</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+		
+	</div>
+</div>
+        
+{% endblock pagecontent %}

@@ -2,53 +2,72 @@ from django import forms
 from django.forms.models import inlineformset_factory, formset_factory
 
 from .models import *
-#Inventario Forms  ---------------------------------------------------------------------------------------
+
+""" ---------------------------------------------------
+    Inventario Forms
+----------------------------------------------------- """
 class InventarioForm(forms.ModelForm):
-	inv_observaciones		=	forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',
-                                                           'placeholder':'Estado',
-                                                           'required':True}),
+	inv_observaciones		=	forms.CharField(widget=forms.Textarea(attrs={'class':'form-control-plaintex',
+                                                           'placeholder':'Anotaciones del inventario',
+                                                           'cols': 45, 'rows': 5}),
                                                     label="Estado del producto")
 	class Meta:
 		model 	=	Inventario
-		fields 	=	('__all__')
-
+		fields 	=	('inv_observaciones',)
+# Formulario del DetalleInventario de llamada
 class DetalleInventarioForm(forms.ModelForm):
-	di_stock_registrado		=	forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control',
-                                                                  'placeholder':'Cantidad',
-                                                                  'required':True}),
-								label="Cantidad")
-	di_stock_auditado		=	forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control',
-                                                                  'placeholder':'Cantidad',
-                                                                  'required':True}),
-								label="Cantidad")
-	di_estado_concordancia	=	forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',
-                                                           'placeholder':'Estado',
-                                                           'required':True}),
-                                                    label="Estado del producto")
-	di_variacion_stock		=	forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control',
-                                                                  'placeholder':'Cantidad',
-                                                                  'required':True}),
-								label="Cantidad")
-	fk_id_inventario		=	forms.ModelChoiceField(queryset=Inventario.objects.all(),empty_label="Escoja un producto",
-                                            widget=forms.Select(attrs={'class':'form-control chosen-select',
-                                                                     'placeholder':'Codigo',
-                                                                     'required':True}))
-	fk_id_stock				=	forms.ModelChoiceField(queryset=Stock.objects.all(),empty_label="Escoja un producto",
-                                            widget=forms.Select(attrs={'class':'form-control chosen-select',
-                                                                     'placeholder':'Codigo',
-                                                                     'required':True}))
-	class Meta:
-		model 	=	DetalleInventario
-		fields 	=	('__all__')
-DetalleInventarioFormSet	=	inlineformset_factory(Inventario,DetalleInventario, 
-												extra=1,can_delete=False, 
-												form=DetalleInventarioForm)
+  fk_id_linea    = forms.ModelChoiceField(queryset=LineaProducto.objects.all(),
+                                            widget=forms.Select(attrs={'class':'form-control-plaintext',
+                                                                     'readonly':'readonly',
+                                                                     'disabled' : 'disabled'
+                                                                     }),)
 
+  fk_id_producto    = forms.ModelChoiceField(queryset=Producto.objects.filter(p_alta_estado=True),
+                                            widget=forms.Select(attrs={'class':'form-control-plaintext',
+                                                                     'readonly':'readonly',
+                                                                     'disabled' : 'disabled'
+                                                                     }),)
+  
+  di_stock_logico		=	forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control-plaintext',
+                                                                  'readonly':'readonly',
+                                                                  'min': '0',
+                                                                  }),)
+
+  di_stock_fisico   = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control',
+                                                                  'placeholder':'Cantidad',
+                                                                  'required':'Ingrese los datos'}),)
+
+  # Funciones que revisan los errores dentro del formulario
+  # Validando valor positvo en di_stock_fisico
+  def __init__(self, *args, **kwargs):
+    super(DetalleInventarioForm, self).__init__(*args, **kwargs)
+    self.fields['di_stock_fisico'].widget.attrs['min'] = 0
+
+  # def clean_price(self):
+  #   stock_fisico = self.cleaned_data['di_stock_fisico']
+  #   if stock_fisico < 0:
+  #     raise forms.ValidationError("Debes ingresar un numero positivo")
+  #   return stock_fisico
+ 
+  class Meta:
+    model 	=	DetalleInventario
+    fields 	=	('id','fk_id_linea','fk_id_producto','di_stock_logico','di_stock_fisico',)
+
+DetalleInventarioFormSet  = inlineformset_factory(Inventario,DetalleInventario,extra=0,can_delete=False,form=DetalleInventarioForm)
+
+# Formulario del DetalleInventario para grabar
+class DetalleInventarioGrabarForm(forms.ModelForm):
+  di_stock_logico   = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control-plaintext',
+                                                                  'readonly':'readonly',
+                                                                  'min': 0,
+                                                                  }),)
+
+  class Meta:
+    model   = DetalleInventario
+    fields  = ('di_stock_fisico',)
+DetalleInventarioGrabarFormSet  = inlineformset_factory(Inventario,DetalleInventario,extra=0,can_delete=False,form=DetalleInventarioGrabarForm)
+    
 #Movimiento Forms  -------------------------------------------------------------------------------------
-class ParteIngresoForm(forms.ModelForm):
-    class Meta:
-        model = ParteIngreso
-        fields = ('__all__')
 
 # class MovimientoForm(forms.ModelForm):
 #   # fk_id_almacen = forms.ModelChoiceField(queryset=Almacen.objects.all(),empty_label="Seleccione el almacen",
@@ -61,11 +80,11 @@ class ParteIngresoForm(forms.ModelForm):
 #     model = Movimiento
 #     fields = ('fk_id_almacen',)
 
-class DetalleMovientoForm(forms.ModelForm):
-  class Meta:
-    model  = DetalleMovimiento
-    fields = ('__all__')
-DetalleMovientoFormSet  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=1,can_delete=False,form=DetalleMovientoForm)
+# class DetalleMovientoForm(forms.ModelForm):
+#   class Meta:
+#     model  = DetalleMovimiento
+#     fields = ('__all__')
+# DetalleMovientoFormSet  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=1,can_delete=False,form=DetalleMovientoForm)
 
 #Orden de trabajo Forms  ----------------------------------------------------------------------------------
 class OrdenTrabajoForm(forms.ModelForm):
@@ -75,7 +94,7 @@ class OrdenTrabajoForm(forms.ModelForm):
                                                                      'placeholder':'Codigo',
                                                                      'required':True}),
                                             label='Empleado que realiza el servicio')
-  fk_id_padron    = forms.ModelChoiceField(queryset=Padron.objects.all(),empty_label="Escoja el vehiculo",
+  fk_id_padron    = forms.ModelChoiceField(queryset=Padron.objects.all(),empty_label="Padrón",
                                             widget=forms.Select(attrs={'class':'form-control chosen-select',
                                                                      'placeholder':'Codigo',
                                                                      'required':True}),
@@ -91,16 +110,16 @@ class OrdenTrabajoForm(forms.ModelForm):
 class OTDetalleMovimientoForm(forms.ModelForm):
     fk_id_producto      = forms.ModelChoiceField(queryset=Producto.objects.filter(p_alta_estado=True),
                                             empty_label="Seleccione el producto",
-                                            widget=forms.Select(attrs={'class':'form-control chosen-select control-producto',
+                                            widget=forms.Select(attrs={'class':'form-control control-producto',
                                                                      'placeholder':'Cantidad',
-
+                                                                     'data-live-search':'true',
                                                                      'required':True}),
                                             label='Producto')
 
     dm_cant_solicitada  = forms.IntegerField(
-                                      widget=forms.NumberInput(attrs={'class':'form-control',
+                                      widget=forms.NumberInput(attrs={'class':'form-control control-pedido',
                                                                       'placeholder':'Cantidad',
-                                                                      'disabled': 'true',
+                                                                      'disabled': False,
                                                                       'required':True}),
                                       label="Cantidad solicitada")
     def clean_cantidad(self):
@@ -113,20 +132,45 @@ class OTDetalleMovimientoForm(forms.ModelForm):
       model   = DetalleMovimiento
       fields  = ('dm_cant_solicitada','fk_id_producto',)
 
-OTDetalleMovientoFormSet  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=2,can_delete=False,form=OTDetalleMovimientoForm)
+OTDetalleMovientoFormSet  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=1,can_delete=False,form=OTDetalleMovimientoForm)
 
 #Parte de ingreso   ------------------------------------------------------------------------------------
 class ParteIngresoForm(forms.ModelForm):
-    class Meta:
-        model = ParteIngreso
-        fields = ('pi_codigo','fk_id_proveedor',)
+  pi_codigo         = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',
+                                                                'placeholder':'Código de ingreso',
+                                                                'required':True}),
+                                            label="Código de ingreso") 
+
+  fk_id_proveedor   = forms.ModelChoiceField(queryset=Proveedor.objects.all(),empty_label="Seleccione Proveedor",
+                                            widget=forms.Select(attrs={'class':'form-control chosen-select',
+                                                                     'placeholder':'Codigo',
+                                                                     'required':True}),
+                                            label='Proveedor')
+  class Meta:
+      model = ParteIngreso
+      fields = ('pi_codigo','fk_id_proveedor',)
+
 
 class PIDetalleMovimientoForm(forms.ModelForm):
-    class Meta:
-        model = DetalleMovimiento
-        fields = ('dm_cant_entrada','fk_id_producto',)
+  fk_id_producto      = forms.ModelChoiceField(queryset=Producto.objects.all(),
+                                            empty_label="Seleccione el producto",
+                                            widget=forms.Select(attrs={'class':'form-control control-producto',
+                                                                     'placeholder':'Cantidad',
+                                                                     'data-live-search':'true',
+                                                                     'required':True}),
+                                            label='Producto')
 
-PIDetalleMovimientoFormset  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=2,can_delete=False,form=PIDetalleMovimientoForm)
+  dm_cant_entrada    = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control control-pedido',
+                                                                      'placeholder':'Cantidad',
+                                                                      'disabled': False,
+                                                                      'required':True}),
+                                            label="Cantidad de entrada")
+
+  class Meta:
+    model = DetalleMovimiento
+    fields = ('dm_cant_entrada','fk_id_producto',)
+
+PIDetalleMovimientoFormset  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=1,can_delete=False,form=PIDetalleMovimientoForm)
 
 #Guía de remisión   ------------------------------------------------------------------------------------ 
 class GuiaRemisionForm(forms.ModelForm):
@@ -149,37 +193,6 @@ class GRDetalleMovimientoForm(forms.ModelForm):
 GRDetalleMovimientoFormset  = inlineformset_factory(Movimiento,DetalleMovimiento,extra=2,can_delete=False,form=GRDetalleMovimientoForm)    
 
 #Servicio Orden de trabajo   -----------------------------------------------------------------------------
-from django.forms import DateTimeField
-class ServicioOrdenTrabajoForm(forms.ModelForm):
-      ot_codigo       = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control',
-                                                                  'disabled': 'true',
-                                                                  'required':False}),
-                                          label="Código Orden de Trabajo")
-
-      ot_fecha_pedido = DateTimeField(widget=forms.widgets.DateTimeInput(format="%d %b %Y %H:%M:%S %Z",
-                                      attrs={'class':'form-control','disabled': 'true','required':False}),
-                                      label="Fecha de Pedido")
-                                            
-      fk_id_usuario   = forms.ModelChoiceField(queryset=Usuario.objects.all(),
-                                              widget=forms.Select(attrs={'class':'form-control chosen-select',
-                                                                     'disabled': 'true',
-                                                                     'required':False}),
-                                          label='Autorizado por: ')
-
-      fk_id_empleado  = forms.ModelChoiceField(queryset=Empleado.objects.all(),
-                                              widget=forms.Select(attrs={'class':'form-control chosen-select',
-                                                                     'disabled': 'true',
-                                                                     'required':False}),
-                                          label='Mecánico: ')
-      fk_id_padron    = forms.ModelChoiceField(queryset=Usuario.objects.all(),
-                                              widget=forms.Select(attrs={'class':'form-control chosen-select',
-                                                                     'disabled': 'true',
-                                                                     'required':False}),
-                                          label='Padrón: ')
-
-      class Meta:
-          model   = OrdenTrabajo
-          fields  = ('ot_codigo','ot_fecha_pedido','fk_id_usuario','fk_id_empleado','fk_id_padron',)
 
 class SOTDetalleMovimientoForm(forms.ModelForm):
     fk_id_producto      = forms.ModelChoiceField(queryset=Producto.objects.all(),

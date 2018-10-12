@@ -46,10 +46,10 @@
 	</nav>
 </div>
 
-{# Barra de navegación de los modulos del sistema-------------------------------------------------------------- #}
-<div class="wrapper">
+<!--SideBar del Sistema -->
+<div class="wrapper ">
         <!-- Sidebar  -->
-        <nav id="sidebar" class="side-nav fixed sn-bg-4">
+        <nav id="sidebar" class="side-nav sn-bg-4">
             <div class="sidebar-header rounded shadow">
             {% if request.user.is_superuser %}
 
@@ -75,6 +75,7 @@
 
             </div>
 
+
             <ul id="acordion" class="list-unstyled components" role="tablist">
 
                 {% if request.user.is_superuser or request.user.is_jefe_alm or request.user.is_operario_alm  %}
@@ -83,14 +84,17 @@
                         <i class="fas fa-warehouse"></i>
                         Almacén
                     </a>
+                    
+
                     <ul class="collapse list-unstyled mr-auto" id="almacenMenu" data-parent="#acordion">
                         <li>
-                            <a href="#" class="fas fa-caret-right">Realizar Inventario</a>
+                            <a href="{% url 'almacen:lista_inventarios' %}" class="fas fa-caret-right">Inventario</a>
                             <a href="#" class="fas fa-caret-right">Registrar Salidas</a>
-                            <a href="#" class="fas fa-caret-right">Registrar Entradas</a>
+                            <a href="{% url 'almacen:parte_ingreso' %}" class="fas fa-caret-right">Registrar Entradas</a>
                             <a href="{% url 'almacen:guia_remision' %}" class="fas fa-caret-right">Guía de Remisión</a>
                         </li>
                     </ul>
+
                 </li>
                 {% endif %}
 
@@ -101,8 +105,8 @@
                     </a>
                     <ul class="collapse list-unstyled mr-auto" id="productosMenu" data-parent="#acordion">
                         <li>
-                            <a href="#" class="fas fa-caret-right">Productos</a>
-                            <a href="#" class="fas fa-caret-right">Lineas</a>
+                            <a href="{% url 'producto:list_producto' %}" class="fas fa-caret-right">Productos</a>
+                            <a href="{% url 'producto:list_linea' %}" class="fas fa-caret-right">Lineas</a>
                         </li>
                     </ul>
                 </li>
@@ -119,7 +123,7 @@
                         </li>
                     </ul>
                 </li>
-
+                {% if request.user.is_jefe_taller or request.user.is_superuser %}
                  <li >
                     <a href="#tallerMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-toolbox"></i>
@@ -132,8 +136,9 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
 
-                <li >
+                <li>
                     <a href="#reportesMenu" data-toggle="collapse" data-parent="#acordion" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-file-signature"></i>
                         Reportes
@@ -178,18 +183,27 @@
         </nav>
 
     <div id="PaginaContenido">
-        {% block breadcrumb %}  <!-- Indica la ubicación de la página actual dentro de una jerarquía de navegación -->
-        {% endblock breadcrumb%}
-		{% block pagecontent %}
+        <!--<div id="loader"></div> -->
+        <div id="lds-ripple"><div></div><div></div></div>
+        
+        <div style="display:none;" id="myDiv" class="animate-bottom">
+            {% block breadcrumb %}  <!-- Indica la ubicación de la página actual dentro de una jerarquía de navegación -->
+            {% endblock breadcrumb%}
 
-		{% endblock pagecontent %}
-    
+            {% block pagecontent %}
+
+            {% endblock pagecontent %}
+        </div>
 	</div>
+
 </div>
+
 {% endblock content %}
 
 {# Extra javaScript ------------------------------------------------------------------------------------- #}
 {% block extrajs %}<!-- Extra scripts que puede ser añadidos por un modulo en especifico" -->
-
+<script type="text/javascript">
+    
+</script> 
 
 {% endblock extrajs %}

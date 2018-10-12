@@ -14,19 +14,52 @@ class Stock(models.Model):
 	stk_fecha_actualizacion	=	models.DateTimeField(blank=True)
 
 #Inventario -------------------------------------------------------------------------
+	# Importamos una función para traducir al lenguaje del usuario (Funciona si USE_L10N=True en settings)
+from django.utils.translation import ugettext_lazy as _
+
 class Inventario(models.Model):
 	inv_fecha_inventario	=	models.DateTimeField(auto_now=True, blank=True)
-	inv_estado				=	models.BooleanField(default=True,verbose_name='Estado del Inventario')
-	inv_observaciones		= 	models.TextField(max_length=500, blank=True)
+	inv_estado				=	models.BooleanField(default=True,verbose_name='Activo')
+	inv_observaciones		= 	models.TextField(max_length=500, blank=True, null=True, default='Sin Comentarios')
+	inv_total_ref			=	models.IntegerField(blank=True, null=True)
+	inv_total_dif			=	models.IntegerField(blank=True, null=True)
+	inv_confiabilidad 		=	models.FloatField(blank=True, null=True)
+
+	# Función para llamar el nombre de Mes del Modelo Inventario
+	def getMes(self):
+		mes = _(self.inv_fecha_inventario.strftime('%B'))
+		return mes
+
+	def getSimpleFecha(self):
+		return self.inv_fecha_inventario.strftime("%d/%m/%y")
+	# Función que me permite pasar a enteros el indice de confiabilidad para mostrarlo en barras bootstrap
+	def intConfiabilidad(self):
+		return int(self.inv_confiabilidad)
+
+class DetalleConfiabilidad(models.Model):
+	fk_id_inventario	=	models.ForeignKey(Inventario, on_delete=models.CASCADE)
+	linea 				=	models.ForeignKey(LineaProducto,on_delete=models.CASCADE)
+	total_ref			=	models.IntegerField(blank=True, null=True)
+	total_dif			=	models.IntegerField(blank=True, null=True)
+	confiabilidad 		=	models.FloatField(blank=True, null=True)
 
 class DetalleInventario(models.Model):
 	fk_id_inventario		=	models.ForeignKey(Inventario, on_delete=models.CASCADE)
-	fk_id_lineaproducto		=	models.ForeignKey(LineaProducto,on_delete=models.CASCADE)
 	fk_id_producto			= 	models.ForeignKey(Producto,on_delete=models.CASCADE)
+	fk_id_linea		 		=	models.ForeignKey(LineaProducto,on_delete=models.CASCADE)
 	di_stock_logico			=	models.IntegerField(blank=True, null=True)
-	di_stock_fisico			=	models.IntegerField(blank=True, null=True)
+	di_stock_fisico			=	models.PositiveIntegerField(blank=True, null=True,validators=[MinValueValidator(0)])
 	di_variacion_stock		=	models.IntegerField(blank=True, null=True)
-	di_estado_concordancia	=	models.BooleanField(default=True)
+	di_estado_concordancia	=	models.BooleanField(default=False)
+
+	def variacion(self):
+		variacion_stock = self.di_stock_logico-self.di_stock_fisico
+		return variacion_stock
+
+	def concordancia(self):
+		if self.di_variacion_stock==0:
+			return True
+		
 
 #Movimientos de Stock-----------------------------------------------------------------
 MOVIMIENTO_TIPO_CHOICES = (
@@ -37,10 +70,18 @@ MOVIMIENTO_TIPO_CHOICES = (
         ('5', 'Ingreso por ajuste de Inventario'),
         ('6', 'Terminado'),
     )
+
+MOVIMIENTO_TIPO = (
+		('1', 'Ingreso de Productos'),
+        ('2', 'Orden de trabajo'),
+        ('3', 'Guia de Remisión'),
+        ('4', 'Ajuste de Inventario'),
+    )
+
 class Movimiento (models.Model):
 	mov_fecha_reg		=	models.DateTimeField(null=True, blank=True)
 	mov_estado			=	models.BooleanField(default=False, verbose_name='Activo')
-	mov_tipo			=	models.CharField(max_length=1, choices=MOVIMIENTO_TIPO_CHOICES,blank=True,null=True)
+	mov_tipo			=	models.CharField(max_length=1, choices=MOVIMIENTO_TIPO,blank=True,null=True)
 	fk_id_usuario		=	models.ForeignKey(Usuario, on_delete=models.SET_NULL, blank=True,null=True)
 	class Meta:
 		verbose_name = "Movimiento"

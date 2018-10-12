@@ -26,7 +26,10 @@ urlpatterns = [
     # path('configuracion/',include('apps.app-urls.configuracion-urls.urls', namespace='configuracion')),
     path('almacen/',include('apps.app-urls.almacen-urls.urls', namespace='almacen')),
     path('taller/',include('apps.app-urls.taller-urls.urls', namespace='taller')),
-
+    path('producto/',include('apps.app-urls.producto-urls.urls', namespace='productos')),
+    
     path('login/',Login.as_view()),
     path('logout/', Logout.as_view()),
 ]
+admin.site.site_header = 'Administrador BACKEND Real Star'
+admin.site.site_title= "Interface web del administrador"

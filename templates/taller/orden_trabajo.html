@@ -1,6 +1,7 @@
 {% extends "almacen/index.html" %}
 {% load static from staticfiles %}
 
+
 {% block breadcrumb %} 
 <nav aria-label="breadcrumb" >
     <ol class="breadcrumb">
@@ -13,133 +14,107 @@
 
 {% block pagecontent %}
 
-<div class="container-fluid">
+
+<div class="container-fluid pb-2">
    
     <div class="panel-heading">
-        <ul class="nav nav-tabs nav-justified" role="tablist">
+        <ul class="nav nav-tabs nav-justified">
             <li class="nav-item" >
-                <a href="{% url 'taller:lista_orden_trabajo' %}" role="tab">Lista de Ordenes de trabajo</a>
+                <a href="{% url 'taller:lista_orden_trabajo' %}" role="tab"><strong>Lista de Ordenes de trabajo</strong></a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link active">Nuevo Orden de trabajo</a>
+                <a href="#" class="nav-link active rounded-top"><strong>Nueva Orden de trabajo</strong></a>
             </li>
         </ul>
     </div>
-    <hr>
+   
     
-    <div class="panel-body ">
+    <div class="panel-body p-3 bg-light rounded shadow">
         <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
             {% csrf_token %}
 
             <div class="form-row form-subtitle col-sm-11 justify-content-between">
-                <span> Orden de trabajo Nº {{codigo_orden}}</span>
-                <input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn btn-outline-success" type="submit" value="Registrar Orden" />
+                <strong><span>Orden de trabajo Nº {{codigo_orden}}</span></strong>
             </div>
 
-
-            <div id="formulario-datos" class="rounded border border-dark ">
-
-                <div class="form-row justify-content-around">
-
-                    <div class="col-sm-5 col-xs-5">
-                        <div class="form-group">
-                            <div class="no-padding-top form-field col-sm-11 ">
-                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
-                                Número de Orden de Trabajo </label></strong>
-                                <div >
-                                    <span align="center" class="text-white"> <strong>{{codigo_orden}}</strong>  </span>
-                                </div>
-                            </div>
-                        </div> 
+            <div id="fomulario-datos" class="rounded border pr-5 pt-3 bg-light shadow">
+                <div class="form-group row pl-4">
+                    <label  class="col-sm-6 col-md-4 col-lg-3 text-justify">
+                        <strong>Número de Orden de Trabajo</strong>
+                    </label>
+                    <div class="col-sm-4 col-md-6 col-lg-4">
+                        {{codigo_orden}}
                     </div>
-                    
-                    <div class="col-sm-5 col-xs-5">
-                        <div class="form-group">
-                            <div class="no-padding-top form-field col-sm-11">
-                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
-                                {{ ordentrabajo_form.fk_id_empleado.label }}</label></strong>
-                                {{ ordentrabajo_form.fk_id_empleado.errors }}
-                                <div class="input-group">
-                                    {{ ordentrabajo_form.fk_id_empleado  }}
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                    
                 </div>
 
-                <div class="form-row justify-content-around">
-
-                    <div class="col-sm-5 col-xs-5 ">
-                        <div class="form-group">
-                            <div class="no-padding-top form-field col-sm-11">
-                                <strong>
-                                    <label class="p-1 mb-2 rounded bg-dark text-white">
-                                    {{ ordentrabajo_form.fk_id_padron.label }}</label>
-                                </strong>
-                                {{ ordentrabajo_form.fk_id_padron.errors }}
-                                <div class="input-group">
-                                    {{ ordentrabajo_form.fk_id_padron  }}
-                                </div>
-                            </div>
-                        </div> 
+                <div class="form-group row pl-4">
+                    <label  class="col-sm-6 col-md-4 col-lg-3 text-justify">
+                        <strong>{{ ordentrabajo_form.fk_id_empleado.label }}</strong>
+                    </label>
+                    <div class="col-sm-4 col-md-6 col-lg-4 ">
+                        {{ ordentrabajo_form.fk_id_empleado  }}
                     </div>
+                </div>
 
-                    <div class="col-sm-5 col-xs-5 ">
-                        <div class="form-group">
-                            <div class="no-padding-top form-field col-sm-11 col-md-11 col-xl-5">
-                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
-                                {{ ordentrabajo_form.ot_kilometraje.label }}</label></strong>
-                                {{ ordentrabajo_form.ot_kilometraje.errors }}
-                                <div class="input-group">
-                                    {{ ordentrabajo_form.ot_kilometraje  }}
-                                </div>
-                            </div>
-                        </div> 
+                <div class="form-group row pl-4">
+                    <label  class="col-sm-6 col-md-4 col-lg-3 text-justify">
+                        <strong>{{ ordentrabajo_form.fk_id_padron.label }}</strong>
+                    </label>
+                    <div class="col-sm-2 col-md-3 col-lg-2 ">
+                        {{ ordentrabajo_form.fk_id_padron }}
                     </div>
+                </div>
 
+                <div class="form-group row pl-4">
+                    <label  class="col-sm-6 col-md-4 col-lg-3 text-justify">
+                        <strong>{{ ordentrabajo_form.ot_kilometraje.label }}</strong>
+                    </label>
+                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                        {{ ordentrabajo_form.ot_kilometraje }}
+                    </div>
                 </div>
 
             </div>
 
-                <div class="form-field form-subtitle col-sm-11">
-                            <span> Lista de Productos</span>
-                </div>
-                <div class="container-fluid rounded border border-dark ">
-                    <div class="form-row justify-content-around">
+            <div class="form-field form-subtitle col-sm-11">
+                    <strong><span> Productos</span></strong>
+                    <input  class ="btn btn-outline-primary btn-lg rounded-circle" type="submit" value="Registrar Orden" /> 
+            </div>
+
+                <div class="container-fluid rounded border bg-light shadow pt-2">
+                    <div class="formset">
                         {{ formset.management_form }}
-                        {% for form in formset %}
+                            {% for form in formset %}
 
-                        <div class="no-padding-top form-field col-sm-11 col-md-11 col-xl-5">
-                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
-                                {{ form.fk_id_producto.label }}</label></strong>
-                                {{ form.fk_id_producto.errors }}
-
-                                <div class="input-group">
-                                    {{ form.fk_id_producto  }}
+                                {% if form.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ form.dm_cant_solicitada.errors }}
                                 </div>
-                        </div>
+                                {% endif %}
 
-                        <div class="no-padding-top form-field col-sm-11 col-md-11 col-xl-5">
-                                <strong><label class="p-1 mb-2 rounded bg-dark text-white">
-                                {{ form.dm_cant_solicitada.label }}</label></strong>
-                                {{ form.dm_cant_solicitada.errors }}
-
-                                <div class="input-group">
-                                    {{ form.dm_cant_solicitada  }}
+                                <div class="form-group row pl-4">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                                        {{ form.fk_id_producto  }}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                                        {{ form.dm_cant_solicitada  }}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 ">
+                                        <button class="btn btn-success add-form-row rounded">
+                                        Añadir más
+                                        </button>
+                                     </div>
                                 </div>
-                                 <hr>
-                        </div>
 
-                        {% endfor %}
+                            {% endfor %}
 
                     </div>
-                
+                    
                 </div>
-            
+                
         </form>
-        
-    </div>
+    </div>  
+</div>
     
     
 	

@@ -33,7 +33,7 @@ class Producto(models.Model):
 	fk_id_linea_producto	=	models.ForeignKey(LineaProducto, on_delete=models.CASCADE, verbose_name="Línea de producto")
 	
 	def __str__(self):
-		return '['+self.p_codigo +'] '+self.p_descripcion
+		return self.p_descripcion
 
 	def get_codigo_producto(self):
 		return self.p_codigo

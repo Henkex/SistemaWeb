@@ -1,6 +1,6 @@
 {% extends 'almacen/index.html' %}
 {% load static from staticfiles %}
-
+{% include "productos/crear_editar_producto" %}
 {% block pagecontent %}
 <button onclick="return abrir_modal('{% url 'productos:crear_producto' %}')" class="btn btn-outline-success">Añadir producto</button>
  <hr>

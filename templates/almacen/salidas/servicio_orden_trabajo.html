@@ -6,9 +6,79 @@
 
 {% block pagecontent %}
 <div class="container-fluid">
+    <div class="form-row form-subtitle col-sm-11 justify-content-between">
+                <span> Orden de trabajo Nº {{codigo_orden}}</span>
+                <input  class ="col-sm-offset-2 col-sm-4  col-xs-12 btn btn btn-outline-success" type="submit" value="Registrar Orden" />
+    </div>
+
+    <div id="encabezado" class="rounded border border-dark shadow">
+        <div class="row justify-content-around">
+            <div class="col-sm-5 col-xs-5">
+                <div class="form-group">
+                    <div class="no-padding-top form-field col-sm-11 ">
+                        <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                        Número de Orden de Trabajo </label></strong>
+                        <div >
+                            <span align="center" id="codigo"> <strong></strong> {{ servicio_orden.ot_codigo }} </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+          
+            <div class="col-sm-5 col-xs-5">
+                <div class="form-group">
+                    <div class="no-padding-top form-field col-sm-11 ">
+                        <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                        Fecha de pedido </label></strong>
+                        <div >
+                            <span align="center"> <strong></strong> {{ servicio_orden.ot_fecha_pedido }} </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="col-sm-5 col-xs-5">
+                <div class="form-group">
+                    <div class="no-padding-top form-field col-sm-11 ">
+                        <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                        Autorizado por: </label></strong>
+                        <div >
+                            <span align="center"> <strong></strong> {{ servicio_orden.fk_id_usuario.get_full_name }} </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="col-sm-5 col-xs-5">
+                <div class="form-group">
+                    <div class="no-padding-top form-field col-sm-11 ">
+                        <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                        Número de Orden de Trabajo </label></strong>
+                        <div >
+                            <span align="center" > <strong></strong> {{ servicio_orden.fk_id_empleado }} </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="col-sm-5 col-xs-5">
+                <div class="form-group">
+                    <div class="no-padding-top form-field col-sm-11 ">
+                        <strong><label class="p-1 mb-2 rounded bg-dark text-white">
+                        Número de Orden de Trabajo </label></strong>
+                        <div >
+                            <span align="center"> <strong></strong> {{ servicio_orden.fk_id_padron }} </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            </div>
+        
+    </div>
 <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
-	
+
 	{% csrf_token %}
+
 		{% for field in ordentrabajo_form %}
 		<div class="form-group{% if field.errors %} invalid{% endif %}">
 			<label for="{{ field.id_for_label }}">{{ field.label }}</label>

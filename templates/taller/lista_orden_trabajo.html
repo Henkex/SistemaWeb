@@ -15,21 +15,20 @@
 	<div class="panel-heading">
 		<ul class="nav nav-tabs nav-justified" role="tablist">
 			<li class="nav-item" >
-				<a href="#" class="nav-link active" href="#profile" role="tab" data-toggle="tab">Lista de Ordenes de trabajo</a>
+				<a href="#" class="nav-link active" href="#profile" role="tab" data-toggle="tab"><strong>Lista de Ordenes de trabajo</strong></a>
 			</li>
 			<li class="nav-item">
-				<a href="{% url 'taller:orden_trabajo' %}">Nuevo Orden de trabajo</a>
+				<a href="{% url 'taller:orden_trabajo' %}"><strong>Nueva Orden de trabajo</strong></a>
 			</li>
 		</ul>
 	</div>
 
-	<div class="panel-body">
-		<div class="panel  panel-primary">
-      <hr>
-            <div class="panel-body container-fluid">
+	<div class="panel-body pt-2 bg-light shadow">
+		<div class="panel  panel-primary pt-2">
+            <div class="panel-body container-fluid bg-light">
                 <div class="table-responsive">
-                    <table id="datatable-responsive" class="table table-striped display">
-                        <thead>
+                    <table id="datatable-responsive" class="table table-striped display table-bordered">
+                        <thead class="thead-dark">
                             <tr  align="center">
                                 <th>Código Orden</th>
                                 <th>Autorizado por</th>
@@ -49,7 +48,12 @@
                                 <td align="center">{{ ordenTrabajo.fk_id_empleado }}</td>
                                 <td align="center">{{ ordenTrabajo.fk_id_padron }}</td>
                                 <td align="center">{{ ordenTrabajo.ot_fecha_pedido	 }}</td>
-                                <td align="center">{{ ordenTrabajo.get_ot_estado_display }}</td>
+
+                                <td align="center">
+                                    <div class="bg-warning rounded">
+                                    {{ ordenTrabajo.get_ot_estado_display }}
+                                    </div>
+                                </td>
                                 <td align="center">
 
                                     <button onclick=""></i><strong>Detalle</strong>
